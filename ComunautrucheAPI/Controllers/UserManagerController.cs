@@ -22,7 +22,7 @@ namespace ComunautrucheAPI.Controllers
 
 
         // Inscription (Register)
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var passwordhash = _userManager.HashPassword(request.Password);
