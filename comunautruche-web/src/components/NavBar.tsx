@@ -24,6 +24,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('token');
     setUserEmail(null);
     navigate('/login');
   };
@@ -53,12 +54,8 @@ const Navbar = () => {
             </Typography>
 
             <Button color="inherit" onClick={handleLogout}>
-  Déconnexion
-</Button>
-
-
-
-
+              Déconnexion
+            </Button>
           </>
         ) : (
           <>

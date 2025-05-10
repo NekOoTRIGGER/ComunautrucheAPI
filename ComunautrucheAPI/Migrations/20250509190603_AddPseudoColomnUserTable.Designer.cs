@@ -4,6 +4,7 @@ using ComunautrucheAPI.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComunautrucheAPI.Migrations
 {
     [DbContext(typeof(AutrucheDbContext))]
-    partial class AutrucheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250509190603_AddPseudoColomnUserTable")]
+    partial class AddPseudoColomnUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 type UserContextType = {
   user: string | null;
-  login: (email: string) => void;
+  mail: (email: string) => void;
   logout: () => void;
 };
 
@@ -11,7 +11,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<string | null>(null);
 
-  const login = (email: string) => {
+  const mail = (email: string) => {
     setUser(email);
   };
 
@@ -20,7 +20,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, mail, logout }}>
       {children}
     </UserContext.Provider>
   );

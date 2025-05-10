@@ -21,7 +21,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { login } = useUser(); // ✅ Hook appelé correctement
+  const { mail } = useUser(); // ✅ Hook appelé correctement
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,10 +44,11 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log('Réponse de l\'API:', data);
 
-      login(email); // ✅ Met à jour le contexte utilisateur
+      mail(email); // ✅ Met à jour le contexte utilisateur
       localStorage.setItem('userEmail', email); // facultatif
+      localStorage.setItem('token', data.token); // ou data.access_token
+
       navigate('/'); // ✅ Redirection après login
 
     } catch (error: any) {

@@ -13,13 +13,14 @@ const API_URL = 'https://localhost:44353/api/UserManager/Register';
 const CreateAccount = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const credentials = { email, password };
+    const credentials = { email, password, pseudo };
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URL+"/"+pseudo, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,6 +46,15 @@ const CreateAccount = () => {
           Créer un compte
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                 <TextField
+            fullWidth
+            label="Pseudo"
+            type="text"
+            value={pseudo}
+            onChange={(e) => setPseudo(e.target.value)}
+            required
+            margin="normal"
+          />
           <TextField
             fullWidth
             label="Adresse e-mail"

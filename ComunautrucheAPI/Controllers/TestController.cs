@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ComunautrucheAPI.Controllers
 {
@@ -6,6 +7,7 @@ namespace ComunautrucheAPI.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        [Authorize]
         [HttpGet("ping")]
         public IActionResult Ping()
         {
