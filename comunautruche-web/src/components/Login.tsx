@@ -21,7 +21,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { mail } = useUser(); // ✅ Hook appelé correctement
+  const { setUserFromLogin } = useUser(); // Appel de la fonction pour mettre à jour l'utilisateur dans le contexte
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +45,11 @@ const Login = () => {
 
       const data = await response.json();
 
-      mail(email); // ✅ Met à jour le contexte utilisateur
-      localStorage.setItem('userEmail', email); // facultatif
+      setUserFromLogin({
+        username: email,  // Mettre à jour l'utilisateur avec l'email
+        pseudo: '', // Optionnel, tu peux ajouter le pseudo si nécessaire
+      });
+      localStorage.setItem('userEmail', credentials.email); // facultatif
       localStorage.setItem('token', data.token); // ou data.access_token
 
       navigate('/'); // ✅ Redirection après login

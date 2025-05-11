@@ -17,13 +17,11 @@ namespace ComunautrucheAPI.Controllers
     public class UserManagerController : ControllerBase
     {
         private readonly AutrucheDbContext _context;
-        private IUserManager _userManager;
-        private JwtSettings _jwtSettings;
-        public UserManagerController(AutrucheDbContext context, IUserManager userManager, JwtSettings jwtSettings)
+        private readonly IUserManager _userManager;
+        public UserManagerController(AutrucheDbContext context, IUserManager userManager)
         {
             _context = context;
             _userManager = userManager;
-            _jwtSettings = jwtSettings;
         }
 
 
@@ -67,30 +65,13 @@ namespace ComunautrucheAPI.Controllers
             }
 
             // Créer les claims
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, user.Username),  // L'username ou autre information pertinente
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())  // Identifiant de l'utilisateur
-    };
-
-            // Générer une clé de sécurité
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));  // Utilisation de la clé du fichier de config
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            // Créer le token JWT
-            var token = new JwtSecurityToken(
-                issuer: "myapi",   // Ton émetteur (par exemple, ton nom de domaine)
-                audience: "admin", // L'audience du token (ex. les utilisateurs qui peuvent le consommer)
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(120), // Le token expire après 30 minutes
-                signingCredentials: creds
-            );
-
-            // Retourner le token en réponse
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            string tokenString = _userManager.ClaimsGenerator(user);
 
             return Ok(new { Token = tokenString });
         }
+
+        
+
         [Authorize]
         [HttpGet("ProtectedRoute")]
         public IActionResult ProtectedRoute()

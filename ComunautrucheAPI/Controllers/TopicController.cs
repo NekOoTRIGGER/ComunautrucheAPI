@@ -20,17 +20,17 @@ namespace ComunautrucheAPI.Controllers
         [HttpPost("user/{userId}/create")]
         public IActionResult Create(int userId)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return Unauthorized("Utilisateur non authentifié");
-            //}
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized("Utilisateur non authentifié");
+            }
             var user = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
             if (user == null)
             {
                 return NotFound("Utilisateur non trouvé");
             }
             
-                Topic topic = new Topic()
+                Topic topic = new()
                 {
                     Title = "Chats",
                     Content = "Tout sur les chats",
@@ -50,9 +50,9 @@ namespace ComunautrucheAPI.Controllers
         public List<Topic> GetAllTopics()        
         {
             return _context.Topics
-                         .Include(t => t.Posts)
-                         .Include(t => t.TopicTags)
-                         .ToList();
+                .Include(t => t.Posts)
+                .Include(t => t.TopicTags)
+                .ToList();
         }
     }
 }

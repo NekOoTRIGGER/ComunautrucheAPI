@@ -4,9 +4,16 @@ export type Topic = {
   content: string;
   createdAt: string;
   user: {
-    name: string;
+    id: number;
+    pseudo: string;
   };
   topicTags: {
+    id: number;
     name: string;
   }[];
+};
+
+export type AuthenticatedUser = {
+  username: string;
+  pseudo: string;
 };

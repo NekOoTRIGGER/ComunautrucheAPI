@@ -1,4 +1,8 @@
-﻿using Konscious.Security.Cryptography;
+﻿using ComunautrucheAPI.Entities;
+using Konscious.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace ComunautrucheAPI.Manager
@@ -7,11 +11,20 @@ namespace ComunautrucheAPI.Manager
     {
         public string HashPassword(string password);
         public bool VerifyPassword(string password, string storedHash);
+        public string ClaimsGenerator(User user);
+
 
     }
 
     public class UserManager: IUserManager
     {
+        private readonly JwtSettings _jwtSettings;
+
+        public UserManager(JwtSettings jwtSettings)
+        {
+            _jwtSettings = jwtSettings;
+        }
+
         public string HashPassword(string password)
         {
             byte[] salt = new byte[16];
@@ -61,5 +74,32 @@ namespace ComunautrucheAPI.Manager
 
             return true;
         }
+
+        public string ClaimsGenerator(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.Username),  // L'username ou autre information pertinente
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())  // Identifiant de l'utilisateur
+            };
+
+            // Générer une clé de sécurité
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));  // Utilisation de la clé du fichier de config
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // Créer le token JWT
+            var token = new JwtSecurityToken(
+                issuer: "myapi",   // Ton émetteur (par exemple, ton nom de domaine)
+                audience: "admin", // L'audience du token (ex. les utilisateurs qui peuvent le consommer)
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(120), // Le token expire après 30 minutes
+                signingCredentials: creds
+            );
+
+            // Retourner le token en réponse
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            return tokenString;
+        }
+
     }
 }

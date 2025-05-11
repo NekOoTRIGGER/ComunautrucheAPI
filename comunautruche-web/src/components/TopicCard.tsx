@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import getData from "./Topic/Topic"; // doit retourner une promesse d'un tableau de Topic
 import { Topic } from "./Types";
-import { useNavigate } from "react-router-dom";
 
 
 export default function TopicCard() {
@@ -28,7 +27,7 @@ const [topics, setTopics] = useState<Topic[]>([]); // ✅ maintenant TypeScript 
               {topic.title}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Par : {topic.user?.name || "Utilisateur inconnu"}
+              Crée Par : {topic.user?.id || "Utilisateur inconnu"}
             </Typography>
             <Typography variant="body2">
               {topic.content}

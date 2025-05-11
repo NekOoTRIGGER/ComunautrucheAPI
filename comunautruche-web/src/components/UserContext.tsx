@@ -1,26 +1,46 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { AuthenticatedUser } from './Types';
 
 type UserContextType = {
-  user: string | null;
-  mail: (email: string) => void;
+  user: AuthenticatedUser | null;
+  setUserFromLogin: (user: AuthenticatedUser) => void;
   logout: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
-  const mail = (email: string) => {
-    setUser(email);
+  // Recharger l'utilisateur depuis localStorage au chargement
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('userEmail');
+    const storedPseudo = localStorage.getItem('userPseudo');
+
+    if (storedUsername && storedPseudo) {
+      setUser({
+        username: storedUsername,
+        pseudo: storedPseudo ?? undefined,
+      });
+    }
+  }, []);  // Le tableau vide assure que cela se fait uniquement au premier rendu
+
+  const setUserFromLogin = (user: AuthenticatedUser) => {
+    setUser(user);
+    localStorage.setItem('userEmail', user.username);
+    if (user.pseudo) {
+      localStorage.setItem('userPseudo', user.pseudo);
+    }
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userPseudo');
   };
 
   return (
-    <UserContext.Provider value={{ user, mail, logout }}>
+    <UserContext.Provider value={{ user, setUserFromLogin, logout }}>
       {children}
     </UserContext.Provider>
   );
