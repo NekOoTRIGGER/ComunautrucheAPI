@@ -19,7 +19,7 @@ const [topics, setTopics] = useState<Topic[]>([]); // ✅ maintenant TypeScript 
   return (
     <>
       <Typography variant="body1">
-    Utilisateur connecté : {user?.pseudo || "Inconnu"}
+    Utilisateur connecté : {user?.username || "Inconnu"}
   </Typography>
       {
       topics.map((topic) => (
