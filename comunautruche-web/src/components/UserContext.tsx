@@ -20,17 +20,17 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedUsername && storedPseudo) {
       setUser({
         username: storedUsername,
-        pseudo: storedPseudo ?? undefined,
+        pseudo: storedPseudo,
       });
     }
   }, []);  // Le tableau vide assure que cela se fait uniquement au premier rendu
 
   const setUserFromLogin = (user: AuthenticatedUser) => {
     setUser(user);
+    console.log({user});
     localStorage.setItem('userEmail', user.username);
-    if (user.pseudo) {
       localStorage.setItem('userPseudo', user.pseudo);
-    }
+    
   };
 
   const logout = () => {

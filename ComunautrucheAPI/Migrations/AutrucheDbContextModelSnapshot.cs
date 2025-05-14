@@ -117,15 +117,15 @@ namespace ComunautrucheAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pseudo")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

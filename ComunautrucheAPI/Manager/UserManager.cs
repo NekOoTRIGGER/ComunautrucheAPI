@@ -79,7 +79,7 @@ namespace ComunautrucheAPI.Manager
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Username),  // L'username ou autre information pertinente
+                new Claim(ClaimTypes.Name, user.Email),  // L'username ou autre information pertinente
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())  // Identifiant de l'utilisateur
             };
 

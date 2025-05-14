@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import getData from "./Topic/Topic"; // doit retourner une promesse d'un tableau de Topic
 import { Topic } from "./Types";
+import { useUser } from "./UserContext";
 
 
 export default function TopicCard() {
 const [topics, setTopics] = useState<Topic[]>([]); // ✅ maintenant TypeScript connaît le type
-
+  const { user } = useUser();
  useEffect(() => {
   async function fetchData() {
     const data = await getData(); // maintenant data contient le tableau JSON
@@ -17,7 +18,11 @@ const [topics, setTopics] = useState<Topic[]>([]); // ✅ maintenant TypeScript 
 
   return (
     <>
-      {topics.map((topic) => (
+      <Typography variant="body1">
+    Utilisateur connecté : {user?.pseudo || "Inconnu"}
+  </Typography>
+      {
+      topics.map((topic) => (
         <Card key={topic.id} sx={{ backgroundColor: "#f5f5f5", minWidth: 50, mb: 2 }}>
           <CardContent>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

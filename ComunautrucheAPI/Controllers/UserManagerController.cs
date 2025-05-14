@@ -30,14 +30,14 @@ namespace ComunautrucheAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest request, string pseudo)
         {
             var passwordhash = _userManager.HashPassword(request.Password);
-            if (_context.Users.Any(u => u.Username == request.Email))
+            if (_context.Users.Any(u => u.Email == request.Email))
             {
                 return BadRequest("Username already exists.");
             }
 
             var user = new User
             {
-                Username = request.Email,
+                Email = request.Email,
                 Password = passwordhash,
                 Pseudo = pseudo
             };
@@ -52,7 +52,7 @@ namespace ComunautrucheAPI.Controllers
         public async Task<IActionResult> Login([FromBody] RegisterRequest request)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == request.Email);
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user == null)
             {
@@ -67,10 +67,19 @@ namespace ComunautrucheAPI.Controllers
             // Créer les claims
             string tokenString = _userManager.ClaimsGenerator(user);
 
-            return Ok(new { Token = tokenString });
+            // Retourner aussi les infos de l'utilisateur
+            return Ok(new { Token = tokenString, user });
         }
 
-        
+        [HttpGet("pseudo/{userId}")]
+        public IActionResult GetPseudo(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            if (user == null)
+                return NotFound("Utilisateur non trouvé");
+
+            return Ok(new { pseudo = user.Pseudo }); // renvoie JSON : { "pseudo": "..." }
+        }
 
         [Authorize]
         [HttpGet("ProtectedRoute")]

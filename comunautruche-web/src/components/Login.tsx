@@ -13,10 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from './UserContext';
 
 const API_URL = 'https://localhost:44353/api/UserManager/Login';
-
+const API_PSEUDO_URL = 'https://localhost:44353/api/UserManager/pseudo/';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Login = () => {
     setLoading(true);
     setError('');
 
-    const credentials = { email, password };
+    const credentials = { email, password, pseudo };
 
     try {
       const response = await fetch(API_URL, {
@@ -50,6 +51,7 @@ const Login = () => {
         pseudo: '', // Optionnel, tu peux ajouter le pseudo si nécessaire
       });
       localStorage.setItem('userEmail', credentials.email); // facultatif
+      // localStorage.setItem('userEmail', credentials.email); // facultatif
       localStorage.setItem('token', data.token); // ou data.access_token
 
       navigate('/'); // ✅ Redirection après login
@@ -58,6 +60,20 @@ const Login = () => {
       setError(error.message || 'Une erreur est survenue');
     } finally {
       setLoading(false);
+    }
+    try {
+      const response = await fetch(API_PSEUDO_URL + "1", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const pseudoData = await response.json(); // pseudoData = { pseudo: "NekOoTRIGGER" }
+      localStorage.setItem('userPseudo', pseudoData.pseudo);
+      console.log(pseudoData.pseudo);
+    } catch (error: any) {
+      setError(error.message || 'Une erreur est survenue');
     }
   };
 

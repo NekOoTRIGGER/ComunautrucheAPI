@@ -12,7 +12,9 @@ const Home = () => {
   return (
     <>
       {user ? (
-        <TopicCard />  // Si l'utilisateur est connecté, afficher les sujets
+        
+        <TopicCard />
+          // Si l'utilisateur est connecté, afficher les sujets
       ) : (
         <h3>Veuillez vous connecter pour voir les sujets.</h3>  // Sinon afficher un message de connexion
       )}

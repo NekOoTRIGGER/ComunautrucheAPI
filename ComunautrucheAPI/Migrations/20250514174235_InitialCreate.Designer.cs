@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComunautrucheAPI.Migrations
 {
     [DbContext(typeof(AutrucheDbContext))]
-    [Migration("20250507215548_InitialCreate")]
+    [Migration("20250514174235_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -120,11 +120,15 @@ namespace ComunautrucheAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Pseudo")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
