@@ -1,3 +1,14 @@
-.App {
+.category-title {
   text-align: center;
+}
+.center-text{
+  text-align: center;
+  color: red;
+}
+.container-card {
+  width: 450px;
+}
+
+.App{
+  background-color: antiquewhite;
 }

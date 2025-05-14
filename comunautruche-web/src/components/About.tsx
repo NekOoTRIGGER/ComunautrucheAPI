@@ -5,8 +5,7 @@ const About = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log(user); // Log pour déboguer, voir si l'utilisateur est correctement récupéré
-  }, [user]);  // Cela se déclenchera chaque fois que `user` changera
+  }, [user]);
 
   return (
      <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">

@@ -1,22 +1,21 @@
-import { useEffect } from 'react';
 import { useUser } from './UserContext';
 import TopicCard from './TopicCard';
+import { useEffect } from 'react';
 
 const Home = () => {
-  const { user } = useUser();
-
+  const { user, setUserFromLogin } = useUser();
   useEffect(() => {
-    console.log(user); // Log pour déboguer, voir si l'utilisateur est correctement récupéré
-  }, [user]);  // Cela se déclenchera chaque fois que `user` changera
-
+  }, [user]);
   return (
     <>
-      {user ? (
-        
-        <TopicCard />
-          // Si l'utilisateur est connecté, afficher les sujets
+      {
+      user?.pseudo ? (
+        <>
+          <h2 className="category-title">Catégories</h2>
+          <TopicCard />
+        </>
       ) : (
-        <h3>Veuillez vous connecter pour voir les sujets.</h3>  // Sinon afficher un message de connexion
+        <h3>Veuillez vous connecter pour voir les sujets.</h3>
       )}
     </>
   );

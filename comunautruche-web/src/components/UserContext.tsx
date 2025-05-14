@@ -12,31 +12,29 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
-  // Recharger l'utilisateur depuis localStorage au chargement
   useEffect(() => {
-    const storedUsername = localStorage.getItem('userEmail');
+    const storedEmail = localStorage.getItem('userEmail');
     const storedPseudo = localStorage.getItem('userPseudo');
-
-    if (storedUsername && storedPseudo) {
+    
+    if (storedEmail && storedPseudo) {
       setUser({
-        username: storedUsername,
+        email: storedEmail,
         pseudo: storedPseudo,
       });
     }
-  }, []);  // Le tableau vide assure que cela se fait uniquement au premier rendu
+  }, []);
 
   const setUserFromLogin = (user: AuthenticatedUser) => {
     setUser(user);
-    console.log({user});
-    localStorage.setItem('userEmail', user.username);
-      localStorage.setItem('userPseudo', user.pseudo);
-    
+    localStorage.setItem('userEmail', user.email);
+    localStorage.setItem('userPseudo', user.pseudo);
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userPseudo');
+    localStorage.removeItem('token');
   };
 
   return (
@@ -49,5 +47,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) throw new Error('useUser must be used within a UserProvider');
+  console.log({context});
   return context;
 };

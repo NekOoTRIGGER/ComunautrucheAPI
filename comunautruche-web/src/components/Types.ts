@@ -14,6 +14,6 @@ export type Topic = {
 };
 
 export type AuthenticatedUser = {
-  username: string;
+  email: string;
   pseudo: string;
 };

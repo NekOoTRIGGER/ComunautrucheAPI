@@ -22,8 +22,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setUserFromLogin } = useUser(); // Appel de la fonction pour mettre à jour l'utilisateur dans le contexte
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -46,34 +44,25 @@ const Login = () => {
 
       const data = await response.json();
 
-      setUserFromLogin({
-        username: email,  // Mettre à jour l'utilisateur avec l'email
-        pseudo: '', // Optionnel, tu peux ajouter le pseudo si nécessaire
-      });
-      localStorage.setItem('userEmail', credentials.email); // facultatif
-      // localStorage.setItem('userEmail', credentials.email); // facultatif
-      localStorage.setItem('token', data.token); // ou data.access_token
+      localStorage.setItem('userEmail', credentials.email);
+      localStorage.setItem('token', data.token);
 
-      navigate('/'); // ✅ Redirection après login
-
-    } catch (error: any) {
-      setError(error.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
-    }
-    try {
-      const response = await fetch(API_PSEUDO_URL + "1", {
+      const res = await fetch(API_PSEUDO_URL + "1", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      const pseudoData = await response.json(); // pseudoData = { pseudo: "NekOoTRIGGER" }
+      const pseudoData = await res.json();
       localStorage.setItem('userPseudo', pseudoData.pseudo);
-      console.log(pseudoData.pseudo);
+
+      navigate('/');
+
     } catch (error: any) {
       setError(error.message || 'Une erreur est survenue');
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -50,10 +50,10 @@ const Navbar = () => {
           </IconButton>
         </Box>
 
-        {user || userEmail ? (  // Vérifie si `user` existe ou si l'email est stocké
+        {user?.pseudo || userEmail ? (  // Vérifie si `user` existe ou si l'email est stocké
           <>
             <Typography variant="body1" sx={{ mr: 2 }}>
-              {user?.username || userEmail}  {/* Affiche `user.username` si disponible, sinon affiche `userEmail` */}
+              {user?.pseudo || user?.email}  {/* Affiche `user.username` si disponible, sinon affiche `userEmail` */}
             </Typography>
 
             <Button color="inherit" onClick={handleLogout}>
