@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using AutoMapper;
 using ComunautrucheAPI.DbContext;
 using ComunautrucheAPI.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +12,10 @@ namespace ComunautrucheAPI.Controllers
     public class TopicController : ControllerBase
     {
         private readonly AutrucheDbContext _context;
-        private readonly IMapper _mapper;
 
-        public TopicController(AutrucheDbContext context, IMapper mapper)
+        public TopicController(AutrucheDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         [Authorize]

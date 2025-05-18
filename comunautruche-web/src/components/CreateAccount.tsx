@@ -32,8 +32,6 @@ const CreateAccount = () => {
         throw new Error('Erreur lors de la création du compte');
       }
 
-      const result = await response.json();
-      console.log('Compte créé avec succès:', result);
     } catch (error) {
       console.error('Erreur:', error);
     }

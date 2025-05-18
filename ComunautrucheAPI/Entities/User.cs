@@ -11,6 +11,8 @@ public class User
     public string Password { get; set; }
     [StringLength(30)]
     public string Pseudo { get; set; }
+    public string Picture { get; set; }
+
 
     public ICollection<Topic> Topics { get; set; }
     public ICollection<Post> Posts { get; set; }

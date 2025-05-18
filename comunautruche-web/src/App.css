@@ -8,7 +8,10 @@
 .container-card {
   width: 450px;
 }
-
-.App{
-  background-color: antiquewhite;
+.App {
+  background-image: url(https://files.123freevectors.com/wp-content/original/154027-abstract-blue-and-white-background-design.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh; /* pour que ça prenne toute la hauteur de la page */
 }

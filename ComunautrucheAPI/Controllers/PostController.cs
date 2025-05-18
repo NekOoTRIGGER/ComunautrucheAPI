@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComunautrucheAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class PostsController : ControllerBase
+    public class PostController : ControllerBase
     {
         private readonly AutrucheDbContext _context;
 
-        public PostsController(AutrucheDbContext context)
+        public PostController(AutrucheDbContext context)
         {
             _context = context;
         }
@@ -47,15 +47,13 @@ namespace ComunautrucheAPI.Controllers
             return CreatedAtAction(nameof(GetPostById), new { id = post.Id }, post);
         }
 
-        [HttpGet]
-        public IActionResult GetPosts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        [HttpGet("allposts")]
+        public IActionResult GetPosts()
         {
             var posts = _context.Posts
                 .Include(p => p.Votes)
                 .Include(p => p.User)
                 .Include(p => p.Topic)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .ToList();
 
             return Ok(posts);
@@ -73,6 +71,13 @@ namespace ComunautrucheAPI.Controllers
             if (post == null)
                 return NotFound();
 
+            return Ok(post);
+        }
+        [HttpGet("topic/{topicId}")]
+        public IActionResult GetPostByTopicId(int topicId)
+        {
+            var post = _context.Posts.Include(x => x.Topic)
+                .Where(x => x.TopicId == topicId);
             return Ok(post);
         }
 

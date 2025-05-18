@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react";
 import { Card, CardActions, CardContent, Typography, Button } from "@mui/material";
-import getData from "./Topic/Topic"; // doit retourner une promesse d'un tableau de Topic
 import { Topic } from "./Types";
 import { useUser } from "./UserContext";
-import '../App.css';
+import { useNavigate } from 'react-router-dom';
 
+import '../App.css';
+const token = localStorage.getItem("token");
+
+async function getData(): Promise<Topic[]> {
+  const url = "https://localhost:44353/api/Topic/";
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    console.log("Fetched JSON:", json); // <== pour déboguer la forme
+
+    if (!Array.isArray(json)) {
+      console.error("Expected array but got:", json);
+      return json.$values;
+    }
+
+    return json;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
+  }
+}
 
 export default function TopicCard() {
   const [topics, setTopics] = useState<Topic[]>([]); // ✅ maintenant TypeScript connaît le type
   const [showInfo, setShowInfo] = useState(false);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -20,22 +52,9 @@ export default function TopicCard() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(450px,0.5fr))",
-        gap: "10px",
-      }}
-    >
+    <div style={{display: "grid",gridTemplateColumns: "repeat(auto-fit, minmax(450px,0.5fr))",gap: "10px",}}>
       {topics.map((topic) => (
-        <div
-          key={topic.id}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div key={topic.id} style={{display: "flex",justifyContent: "center",alignItems: "center"}}>
           <Card
             className="container-card"
             key={topic.id}
@@ -63,7 +82,7 @@ export default function TopicCard() {
               <Button sx={{
                 fontSize: 16, backgroundColor: 'whitesmoke', boxShadow: 'none', transition: 'box-shadow 0.3s ease',
                 '&:hover': { boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)', backgroundColor: 'whitesmoke', },
-              }} size="small">
+              }}  onClick={() => navigate(`/post/${topic.id}`)} size="small">
                 Voir les sujets
               </Button>
             </CardActions>
